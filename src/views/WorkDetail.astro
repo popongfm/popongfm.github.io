@@ -1,15 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
+import ProjectBody from '../components/ProjectBody.astro';
 import type { Locale } from '../data/site';
 import type { LocalizedProject } from '../lib/projects';
-import { t } from '../i18n/ui';
+import { getThaiBody } from '../lib/projects';
+import { t, localePath } from '../i18n/ui';
+import { getEntry, render } from 'astro:content';
 interface Props { locale: Locale; project: LocalizedProject }
 const { locale, project } = Astro.props;
+const th = locale === 'th' ? await getThaiBody(project.slug) : null;
+const entry = await getEntry('projects', project.slug);
+const { Content } = th ?? (await render(entry!));
 ---
 <Base title={`${project.title} — Popong Faimoon`} {locale} description={project.summary}>
-  <article class="wrap">
-    <h1>{project.title}</h1>
-    {project.isFallback && <p class="fallback" lang="th">{t(locale, 'fallback.notice')}</p>}
-    <p>{project.summary}</p>
+  <article class="wrap detail">
+    <p><a href={localePath(locale, '/work')}>← {t(locale, 'work.back')}</a></p>
+    <ProjectBody {project} {locale} headingLevel={1}><Content /></ProjectBody>
   </article>
 </Base>
+<style>.detail { max-width: 860px; padding-block: 24px 64px; }</style>
