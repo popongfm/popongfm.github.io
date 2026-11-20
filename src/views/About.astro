@@ -4,6 +4,7 @@ import TarotSpread from '../components/TarotSpread.astro';
 import Skills from '../components/Skills.astro';
 import Chronicle from '../components/Chronicle.astro';
 import Contact from '../components/Contact.astro';
+import SelfPortrait from '../components/SelfPortrait.astro';
 import type { Locale } from '../data/site';
 import { t } from '../i18n/ui';
 interface Props { locale: Locale }
@@ -11,7 +12,7 @@ const { locale } = Astro.props;
 ---
 <Base title={`${t(locale, 'about.title')} — Popong Faimoon`} {locale}>
   <div class="wrap about">
-    <h1><span class="rune" aria-hidden="true">ᛗ</span> {t(locale, 'about.title')}</h1>
+    <SelfPortrait {locale} />
     <TarotSpread {locale} />
     <Skills {locale} />
     <Chronicle {locale} />

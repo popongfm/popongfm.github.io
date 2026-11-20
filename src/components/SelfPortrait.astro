@@ -1,0 +1,39 @@
+---
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<header class="self-wrap">
+  <figure class="self">
+    <div class="arch">
+      <img src="/portrait/portrait-sky.webp" width="800" height="1000" alt="Popong Faimoon looking up at the sky" loading="eager" decoding="async" />
+      <svg class="stars" viewBox="0 0 100 125" aria-hidden="true" focusable="false">
+        <path d="M78 14 l1.2 3.6 3.8 0 -3 2.3 1.1 3.6 -3.1 -2.2 -3.1 2.2 1.1 -3.6 -3 -2.3 3.8 0z" />
+        <circle cx="64" cy="9" r=".7" /><circle cx="88" cy="26" r=".6" /><circle cx="70" cy="24" r=".5" />
+        <polyline points="64,9 78,17 88,26" />
+      </svg>
+    </div>
+    <figcaption><span class="rune" aria-hidden="true">ᛗ</span> Mannaz · {locale === 'th' ? 'ตัวตน' : 'the self'}</figcaption>
+  </figure>
+  <div class="self-text">
+    <h1><span class="rune" aria-hidden="true">ᛗ</span> {t(locale, 'about.title')}</h1>
+    <p class="self-intro">3rd-year AI Engineering &amp; Data Science student at Bangkok University who builds ML solutions end-to-end, from data preparation and database design to model training and evaluation. Hands-on with Python, PostgreSQL, PyTorch and YOLO, with a focus on medical computer vision.</p>
+    <p class="self-intro muted">Outside the code: space technology and astrophysics — which is why this portfolio is a sky.</p>
+  </div>
+</header>
+<style>
+  .self-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px 56px; align-items: center; }
+  @media (min-width: 860px) { .self-wrap { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); } }
+  .self { margin: 0; justify-self: center; width: min(340px, 100%); }
+  .arch { position: relative; aspect-ratio: 4 / 5; border-radius: 170px 170px 10px 10px; overflow: hidden; border: 1px solid var(--gold); outline: 1px solid rgba(217, 185, 110, .35); outline-offset: 6px; box-shadow: 0 0 40px rgba(217, 185, 110, .12); }
+  .arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .stars { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--gold-3); stroke: var(--gold-3); stroke-width: .25; }
+  .stars polyline { fill: none; stroke-opacity: .6; }
+  figcaption { margin-top: 16px; text-align: center; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  figcaption .rune { color: var(--gold-3); font-size: 16px; letter-spacing: 0; }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(44px, 6vw, 72px); margin: 0 0 16px; }
+  h1 .rune { color: var(--gold-3); text-shadow: 0 0 14px var(--halo); }
+  .self-intro { color: var(--text-2); font-size: 15px; line-height: 1.8; max-width: 620px; margin: 0 0 12px; }
+  .self-intro.muted { color: #A9A28E; }
+</style>
