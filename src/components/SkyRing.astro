@@ -79,6 +79,9 @@ const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
   .star.is-hover .dot { transform: scale(1.6); }
   #sky { position: relative; width: min(660px, 100%); aspect-ratio: 1; container-type: inline-size; margin-inline: auto; }
   .canvas-host { position: absolute; inset: 0; }
+  #sky[data-mode="3d"] .canvas-host { position: fixed; inset: 0; }
+  .canvas-host :global(canvas) { display: block; width: 100%; height: 100%; cursor: grab; }
+  .canvas-host :global(canvas:active) { cursor: grabbing; }
   .chart { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
   .chart circle { fill: none; stroke: var(--gold); vector-effect: non-scaling-stroke; }
   .c1 { stroke-opacity: .2; } .c2 { stroke-opacity: .14; } .c3 { stroke-opacity: .1; stroke-dasharray: 1 8; }
