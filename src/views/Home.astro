@@ -1,0 +1,7 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Locale } from '../data/site';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<Base title="Popong Faimoon — Portfolio" {locale}><div class="wrap"><h1>Popong Faimoon</h1></div></Base>

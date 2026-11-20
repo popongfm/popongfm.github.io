@@ -2,8 +2,11 @@
 import '../styles/tokens.css';
 import Nav from '../components/Nav.astro';
 import type { Locale } from '../data/site';
+import { t, localePath, stripLocale } from '../i18n/ui';
 interface Props { title: string; locale: Locale; description?: string }
 const { title, locale, description = 'Popong Faimoon — AI Engineering & Data Science student. Medical computer vision, robotics and space.' } = Astro.props;
+const path = stripLocale(Astro.url.pathname);
+const abs = (l: Locale) => new URL(localePath(l, path), Astro.site).href;
 ---
 <!doctype html>
 <html lang={locale}>
@@ -16,10 +19,14 @@ const { title, locale, description = 'Popong Faimoon — AI Engineering & Data S
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500&family=Noto+Serif+Thai:wght@500&family=Noto+Sans+Runic&display=swap" />
+  <link rel="canonical" href={abs(locale)} />
+  <link rel="alternate" hreflang="en" href={abs('en')} />
+  <link rel="alternate" hreflang="th" href={abs('th')} />
+  <link rel="alternate" hreflang="x-default" href={abs('en')} />
   <slot name="head" />
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">{t(locale, 'skip')}</a>
   <Nav locale={locale} />
   <main id="main"><slot /></main>
   <footer class="wrap footer"><span class="rune" aria-hidden="true">ᚷ</span> Popong Faimoon · Pathum Thani, Thailand</footer>

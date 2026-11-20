@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Locale } from '../data/site';
+import type { LocalizedProject } from '../lib/projects';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale; project: LocalizedProject }
+const { locale, project } = Astro.props;
+---
+<Base title={`${project.title} — Popong Faimoon`} {locale} description={project.summary}>
+  <article class="wrap">
+    <h1>{project.title}</h1>
+    {project.isFallback && <p class="fallback" lang="th">{t(locale, 'fallback.notice')}</p>}
+    <p>{project.summary}</p>
+  </article>
+</Base>

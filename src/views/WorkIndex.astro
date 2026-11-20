@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<Base title={`${t(locale, 'work.title')} — Popong Faimoon`} {locale}><div class="wrap"><h1>{t(locale, 'work.title')}</h1></div></Base>

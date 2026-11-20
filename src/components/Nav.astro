@@ -1,23 +1,23 @@
 ---
 import { site, type Locale } from '../data/site';
+import { t, localePath, altLocale, stripLocale } from '../i18n/ui';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const base = locale === 'th' ? '/th' : '';
-const labels = { work: 'Work', about: 'About', cv: 'CV', contact: 'Contact' };
-const altHref = locale === 'th' ? '/' : '/th/';
+const alt = altLocale(locale);
+const altHref = localePath(alt, stripLocale(Astro.url.pathname));
 ---
 <header class="site-header">
   <nav aria-label="Main" class="wrap nav">
-    <a class="brand" href={`${base}/`}>
+    <a class="brand" href={localePath(locale, '/')}>
       <span class="rune" aria-hidden="true">ᛗ</span>
       <span class="brand-name">{site.name}</span>
     </a>
     <ul class="links">
-      <li><a href={`${base}/work`}>{labels.work}</a></li>
-      <li><a href={`${base}/about`}>{labels.about}</a></li>
-      <li><a href={`${base}/cv`}>{labels.cv}</a></li>
-      <li><a href={`${base}/about#contact`}>{labels.contact}</a></li>
-      <li><a class="lang" href={altHref} lang={locale === 'th' ? 'en' : 'th'}>EN / ไทย</a></li>
+      <li><a href={localePath(locale, '/work')}>{t(locale, 'nav.work')}</a></li>
+      <li><a href={localePath(locale, '/about')}>{t(locale, 'nav.about')}</a></li>
+      <li><a href={localePath(locale, '/cv')}>{t(locale, 'nav.cv')}</a></li>
+      <li><a href={`${localePath(locale, '/about')}#contact`}>{t(locale, 'nav.contact')}</a></li>
+      <li><a class="lang" href={altHref} hreflang={alt}>EN / ไทย</a></li>
     </ul>
   </nav>
 </header>
@@ -27,8 +27,8 @@ const altHref = locale === 'th' ? '/' : '/th/';
   .brand { display: flex; gap: 12px; align-items: baseline; text-decoration: none; color: var(--cream); }
   .brand .rune { color: var(--gold-2); font-size: 22px; }
   .brand-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: .04em; }
-  .links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center; }
-  .links a { color: var(--cream); text-decoration: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; padding: 8px 0; display: inline-block; }
+  .links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; align-items: center; }
+  .links a { color: var(--cream); text-decoration: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; padding: 12px 0; display: inline-block; }
   .links a:hover { color: var(--gold-3); }
-  .links a.lang { color: var(--gold-2); border: 1px solid #5C5137; padding: 8px 12px; border-radius: 2px; text-transform: none; letter-spacing: .08em; }
+  .links a.lang { color: var(--gold-2); border: 1px solid #5C5137; padding: 10px 12px; border-radius: 2px; text-transform: none; letter-spacing: .08em; }
 </style>
