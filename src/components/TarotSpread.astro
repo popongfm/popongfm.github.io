@@ -39,8 +39,9 @@ const cards = TAROT.map((c) => ({ ...c, image: existsSync(`public/tarot/${c.id}.
   </ol>
 </section>
 <script>
-  document.querySelectorAll<HTMLButtonElement>('.tarot button.card').forEach((b) => {
-    b.addEventListener('click', () => b.setAttribute('aria-expanded', String(b.getAttribute('aria-expanded') !== 'true')));
+  document.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.tarot button.card');
+    if (b) b.setAttribute('aria-expanded', String(b.getAttribute('aria-expanded') !== 'true'));
   });
 </script>
 <style>

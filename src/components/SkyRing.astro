@@ -3,7 +3,7 @@ import { FUTHARK, LIT_RUNES, RUNES, CONSTELLATION_LABEL, runeByChar, type Conste
 import { CONSTELLATIONS, LABEL_AT, starPosition } from '../lib/sky/layout';
 import type { LocalizedProject } from '../lib/projects';
 import type { Locale } from '../data/site';
-import { localePath } from '../i18n/ui';
+import { localePath, t } from '../i18n/ui';
 interface Props { projects: LocalizedProject[]; locale: Locale }
 const { projects, locale } = Astro.props;
 const H = 1.2; // half-extent of the coordinate box
@@ -21,6 +21,12 @@ const lines = (Object.entries(CONSTELLATIONS) as [ConstellationId, typeof CONSTE
   c.lines.map((l) => l.map((i) => c.points[i].join(',')).join(' ')));
 const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
 ---
+<div class="sky-shell">
+<div class="sky-bar" aria-label="Sky controls">
+  <span class="sky-hint">{t(locale, 'sky.hint')}</span>
+  <button type="button" class="sky-btn recenter" data-recenter>{t(locale, 'sky.recenter')}</button>
+  <button type="button" class="sky-btn" data-exit>{t(locale, 'sky.close')} ✕</button>
+</div>
 <div id="sky" data-mode="static" data-journey="false" data-locale={locale}>
   <div class="canvas-host" aria-hidden="true"></div>
   <svg class="chart" viewBox={`${-H} ${-H} ${2 * H} ${2 * H}`} aria-hidden="true" focusable="false">
@@ -45,7 +51,7 @@ const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
       const [x, y] = starPosition(p.constellation, p.order);
       return (
         <li style={`left:${pct(x)};top:${pct(y)}`}>
-          <a class="star" href={localePath(locale, `/work/${p.slug}`)} data-slug={p.slug} data-constellation={p.constellation} data-brightness={p.brightness} aria-label={p.title}>
+          <a class="star" href={localePath(locale, `/work/${p.slug}`)} data-slug={p.slug} data-constellation={p.constellation} data-brightness={p.brightness} data-order={p.order} aria-label={p.title}>
             <span class="dot" aria-hidden="true"></span>
             <span class="name" aria-hidden="true">{p.title}</span>
           </a>
@@ -54,7 +60,23 @@ const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
     })}
   </ul>
 </div>
+</div>
 <style>
+  .sky-shell { position: relative; }
+  .sky-bar { display: none; }
+  .sky-shell.is-journey { position: fixed; inset: 0; z-index: 50; background: radial-gradient(circle at 50% 50%, #17213C 0%, var(--ink) 70%); display: grid; place-items: center; padding: 64px 16px 16px; overflow: hidden; }
+  .sky-shell.is-journey .sky-bar { display: flex; position: absolute; top: 0; left: 0; right: 0; gap: 12px; align-items: center; justify-content: flex-end; padding: 12px 16px; z-index: 60; flex-wrap: wrap; }
+  .sky-hint { margin-right: auto; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .sky-btn { font: inherit; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); background: rgba(15, 20, 38, .85); border: 1px solid #5C5137; padding: 10px 14px; min-height: 44px; border-radius: 2px; cursor: pointer; }
+  .sky-btn:hover { border-color: var(--gold-3); color: var(--gold-3); }
+  .recenter { display: none; }
+  .sky-shell.is-journey:has(#sky[data-mode="3d"]) .recenter { display: inline-block; }
+  .sky-shell.is-journey #sky { width: min(92vh - 80px, 92vw, 900px); }
+  #sky[data-mode="3d"] .chart, #sky[data-mode="3d"] .ring, #sky[data-mode="3d"] .c-label { opacity: 0; pointer-events: none; }
+  #sky[data-mode="3d"] .ring a.ring-rune { pointer-events: auto; opacity: .01; }
+  #sky[data-mode="3d"] .star .dot { opacity: 0; }
+  .star.is-active .dot { transform: scale(1.8); background: #fff; }
+  .star.is-hover .dot { transform: scale(1.6); }
   #sky { position: relative; width: min(660px, 100%); aspect-ratio: 1; container-type: inline-size; margin-inline: auto; }
   .canvas-host { position: absolute; inset: 0; }
   .chart { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
