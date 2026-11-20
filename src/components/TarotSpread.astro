@@ -25,11 +25,11 @@ const cards = TAROT.map((c) => ({ ...c, image: existsSync(`public/tarot/${c.id}.
                   {c.id === 'star' && <g><path d="M50 14 L54 40 L76 30 L60 48 L84 56 L58 60 L66 84 L50 66 L34 84 L42 60 L16 56 L40 48 L24 30 L46 40 Z" /><path d="M12 112 q12 -6 24 0 t24 0 t24 0 t12 0 M12 124 q12 -6 24 0 t24 0 t24 0 t12 0" /><circle cx="22" cy="20" r="1.5" /><circle cx="82" cy="18" r="1.5" /><circle cx="88" cy="88" r="1.5" /></g>}
                 </svg>
               )}
-              <span class="foot"><span class="rune" aria-hidden="true">{c.rune}</span><span class="card-name">{c.name}</span></span>
+              <span class="foot"><span class="rune" aria-hidden="true">{c.rune}</span><span class="card-name">{c.name}</span>{locale === 'th' && <span class="card-th">{c.nameTh}</span>}</span>
             </span>
             <span class="face back" id={`tarot-${c.id}`}>
-              <span class="b-name">{c.name}</span>
-              <span class="b-meaning">{c.meaning}</span>
+              <span class="b-name">{locale === 'th' ? c.nameTh : c.name}</span>
+              <span class="b-meaning">{c.meaning[locale]}</span>
               <span class="b-text">{c.text[locale] ?? c.text.en}</span>
             </span>
           </span>
@@ -60,6 +60,7 @@ const cards = TAROT.map((c) => ({ ...c, image: existsSync(`public/tarot/${c.id}.
   .foot { display: flex; flex-direction: column; align-items: center; gap: 2px; }
   .foot .rune { color: var(--gold-3); font-size: 20px; text-shadow: 0 0 12px var(--halo); }
   .card-name { font-family: var(--font-display); font-size: 20px; color: var(--cream); letter-spacing: .06em; }
+  .card-th { font-size: 12px; color: var(--muted); }
   .b-name { font-family: var(--font-display); font-size: 24px; color: var(--gold-3); }
   .b-meaning { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .b-text { font-size: 13px; line-height: 1.7; color: var(--text-2); }

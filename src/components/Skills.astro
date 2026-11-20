@@ -7,7 +7,7 @@ const { locale } = Astro.props;
 ---
 <section id="skills" class="block" aria-labelledby="skills-h">
   <h2 id="skills-h"><span class="rune" aria-hidden="true">ᚲ</span> {t(locale, 'skills.title')}</h2>
-  <dl class="skills">{SKILLS.map((s) => <div><dt>{s.group}</dt><dd>{s.items}</dd></div>)}</dl>
+  <dl class="skills">{SKILLS.map((s) => <div><dt>{s.group[locale]}</dt><dd>{s.items[locale]}</dd></div>)}</dl>
 </section>
 <style>
   .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px 32px; margin: 0; }

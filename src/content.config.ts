@@ -16,6 +16,8 @@ const projects = defineCollection({
     status: z.enum(['done', 'in-progress']),
     role: text,
     context: z.string(),
+    contextTh: z.string().optional(),
+    yearTh: z.string().optional(),
     year: z.string(),
     tools: z.array(z.string()).default([]),
     links: z.object({ github: z.string().url().optional(), demo: z.string().url().optional(), paper: z.string().url().optional() }).default({}),

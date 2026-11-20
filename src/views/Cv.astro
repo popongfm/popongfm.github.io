@@ -15,13 +15,13 @@ const projects = await getProjects(locale);
 <Base title={`${t(locale, 'cv.title')} — Popong Faimoon`} {locale}>
   <div class="wrap cv">
     <header>
-      <h1>{site.name}</h1>
-      <p class="sub">AI Engineering &amp; Data Science Student · Computer Vision · Medical AI · Pathum Thani, Thailand</p>
+      <h1>{locale === 'th' ? site.nameTh : site.name}</h1>
+      <p class="sub">{t(locale, 'cv.sub')}</p>
       <p><a href={`mailto:${site.email}`}>{site.email}</a> · <a href={site.github}>github.com/popongfm</a> · <a href={site.linkedin}>LinkedIn</a></p>
       {hasPdf && <a class="dl" href="/cv.pdf" download>{t(locale, 'cv.download')}</a>}
     </header>
     <section class="block"><h2>{t(locale, 'cv.education')}</h2>
-      <h3>{education.degree}</h3><p>{education.school} · {education.years} · {education.gpax}</p><p>{education.coursework}</p>
+      <h3>{education.degree[locale]}</h3><p>{education.school[locale]} · {education.years[locale]} · {education.gpax[locale]}</p><p>{education.coursework[locale]}</p>
     </section>
     <section class="block"><h2>{t(locale, 'work.title')}</h2>
       <ul class="plist">{projects.map((p) => <li><a href={localePath(locale, `/work/${p.slug}`)}>{p.title}</a> <span>— {p.context}, {p.year}. {p.role}</span></li>)}</ul>
@@ -29,7 +29,7 @@ const projects = await getProjects(locale);
     <Skills {locale} />
     <Chronicle {locale} />
     <section class="block"><h2>{t(locale, 'certs.title')}</h2>
-      <ul class="plist">{CERTIFICATES.map((c) => <li><strong>{c.title}</strong> <span>— {c.issuer}, {c.when}.{c.note ? ` ${c.note}` : ''}</span></li>)}</ul>
+      <ul class="plist">{CERTIFICATES.map((c) => <li><strong lang="en">{c.title}</strong> <span>— {c.issuer[locale]}, {c.when[locale]}.{c.note ? ` ${c.note[locale]}` : ''}</span></li>)}</ul>
     </section>
   </div>
 </Base>

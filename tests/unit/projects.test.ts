@@ -67,3 +67,14 @@ describe('code links from the portfolio PDF', () => {
     expect(entries.find((e) => e.slug === 'visionquest-chat-portfolio')!.data.links?.demo).toBe('https://visionquest-htn7.onrender.com/');
   });
 });
+
+describe('thai content', () => {
+  it('every project has thai title, summary, role and body', () => {
+    for (const e of entries) {
+      expect(e.data.title.th, e.slug).toBeTruthy();
+      expect(e.data.summary.th, e.slug).toBeTruthy();
+      expect(e.data.role.th, e.slug).toBeTruthy();
+      expect(readdirSync(dir)).toContain(`${e.slug}.th.md`);
+    }
+  });
+});

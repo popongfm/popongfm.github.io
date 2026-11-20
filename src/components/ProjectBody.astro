@@ -21,9 +21,9 @@ const H = headingLevel === 1 ? 'h1' : 'h2';
   <div class="prose"><slot /></div>
   {(p.links.github || p.links.demo || p.links.paper) && (
     <p class="links">
-      {p.links.github && <a href={p.links.github} rel="noopener">Code on GitHub ↗</a>}
-      {p.links.demo && <a href={p.links.demo} rel="noopener">Live demo ↗</a>}
-      {p.links.paper && <a href={p.links.paper} rel="noopener">Paper ↗</a>}
+      {p.links.github && <a href={p.links.github} rel="noopener">{t(locale, 'link.code')} ↗</a>}
+      {p.links.demo && <a href={p.links.demo} rel="noopener">{t(locale, 'link.demo')} ↗</a>}
+      {p.links.paper && <a href={p.links.paper} rel="noopener">{t(locale, 'link.paper')} ↗</a>}
     </p>
   )}
 </div>
