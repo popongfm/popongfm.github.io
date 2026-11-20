@@ -25,6 +25,12 @@ test('dc-cellnet links to github', async ({ page }) => {
   await expect(page.locator('a[href="https://github.com/popongfm/DC-CellNet"]')).toBeVisible();
 });
 
+test('dc-cellnet credits the bccd proof of concept', async ({ page }) => {
+  await page.goto('/work/dc-cellnet');
+  await expect(page.locator('article')).toContainText('proof of concept');
+  await expect(page.locator('a[href="https://github.com/popongfm/Blood-Cell-Detection"]')).toBeVisible();
+});
+
 test('no phone number', async ({ page }) => {
   for (const url of ['/work', '/work/medi-ident-ai', '/cv', '/about']) {
     await page.goto(url);
