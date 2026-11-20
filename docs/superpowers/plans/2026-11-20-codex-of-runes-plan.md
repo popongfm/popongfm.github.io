@@ -37,14 +37,16 @@
 - Rune meanings are labelled "traditional meanings".
 - Content truth rules:
   - The CubeSat is titled "Gamma-Ray Burst CubeSat". The string "ANTARES-74" appears nowhere on the site.
-  - Tic-Tac-Toe robot role: "Operated and maintained the system and fixed basic bugs; did not develop the full system."
+  - Tic-Tac-Toe robot role (Chronicle only, not a star): "I did not develop the whole system: my advisor taught me to run it and to fix basic bugs when problems come up."
   - Never mention NVIDIA Jetson / edge deployment.
   - No invented stats, awards or numbers. Missing content uses a visible `[TODO: …]` placeholder in the source and is hidden in production via `draft: true` where a whole entry lacks content.
 - Text contrast ≥ 4.5:1. Decorative runes and SVGs get `aria-hidden="true"`.
 - `prefers-reduced-motion: reduce` turns off camera flights, twinkle and the rune-decode effect. Text shows immediately.
 - Thai pages with missing Thai fields show the English text plus the notice "ยังไม่มีฉบับภาษาไทย — แสดงเป็นภาษาอังกฤษ". The build never fails for missing Thai.
 - Tarot: The Fool (0) = past, The Magician (I) = present, The Star (XVII) = future. Mickie supplies the AI-generated self-portraits later. Until then, show gold line-art placeholder cards. Never use existing deck art.
-- Featured order: 1 `medi-ident-ai`, 2 `ispace-lunar-workshop`, 3 `dc-cellnet` (status `in-progress`).
+- Featured order: 1 `medi-ident-ai` (in-progress), 2 `ispace-lunar-workshop`, 3 `dc-cellnet` (in-progress).
+- Contact shown on the site: email, GitHub, LinkedIn only. **No phone number** on any page.
+- Metrics allowed on the site are exactly those in Mickie's PDFs (e.g. 89.2% mAP50, 83.9% F1, +6.9 F1, 60 trainees, 1 of 31, 33 classes, 21 tables, 109 responses, 160 members). Nothing else numeric.
 
 ## Review Focus
 
@@ -169,24 +171,26 @@ Thai meanings:
 - ᛗ มนุษย์ ตัวตน
 - ᚷ ของขวัญ การแลกเปลี่ยน
 
-Project entries (EN title · constellation/order · featured · status · known facts only; everything else `[TODO: Mickie]`):
+Project entries. Source of truth: Mickie's CV and "Portfolio (Arcane Tech)" PDFs, copied into `docs/content-sources/` (Task 2 Step 0). Write each entry's body from the matching PDF section, keeping Mickie's own wording and **only** facts stated there. The portfolio's rule applies site-wide: *"I describe only what I did myself."* Every entry gets a `role` that says what Mickie did, separately from what teammates did.
 
-| slug | title.en | const/order | featured | status | known facts |
+| slug | title.en | const/order | featured | status | facts to use (from the PDFs) |
 |---|---|---|---|---|---|
-| medi-ident-ai | Medi-Ident AI | medical/0 | 1 | done | Android app identifying blood-pressure medications from photos; exhibited at PRIS 2026 (29–30 Oct 2026) |
-| dc-cellnet | DC-CellNet | medical/1 | 3 | in-progress | Blood-cell detection research; github https://github.com/popongfm/DC-CellNet |
-| mymedicine | MyMedicine | medical/2 | – | done | Pill instance segmentation with YOLO-seg |
-| hospital-system | Hospital & Clinic System | medical/3 | – | done | Supabase web app: patients, staff roles, pharmacy, AI agent |
-| ispace-lunar-workshop | ispace Lunar Mission Workshop | space/0 | 2 | done | Selected participant via online application |
-| grb-cubesat | Gamma-Ray Burst CubeSat | space/1 | – | done | 6U CubeSat mission concept, GISTDA School Satellite Competition 2025; role: team lead |
-| turtlebot3-person-detection | TurtleBot3 Person Detection | robotics/0 | – | done | ROS 2; odometry distance client + YOLO detection server; group project |
-| amr-iiot | AMR IIoT Prototype | robotics/1 | – | done | AMRs hauling goods from factory QC to loading dock; user testing with QC staff, drivers, managers |
-| tictactoe-robot | Tic-Tac-Toe Robot (PERSPECTIVE show) | robotics/2 | – | done | PLC + YOLO vision; role sentence from Global Constraints |
-| lucien | LUCIEN | data/0 | – | in-progress | Personal AI agent |
-| big-data-pipeline | Big Data Pipeline | data/1 | – | done | Course final project (AIE321) |
-| visionquest-chatbot | VisionQuest Chatbot | data/2 | – | done | Course chatbot (AIE312) |
-| ocr-drive-pipeline | Drive OCR Pipeline | data/3 | – | done | Google Drive OCR → Google Sheets, Fernet encryption |
+| medi-ident-ai | Medi-Ident AI | medical/0 | 1 | in-progress | Android app; 33 classes of hypertension medications from a pill photo; YOLO11s. Pipeline: Flutter app → ngrok tunnel → FastAPI on Ubuntu Mini PC (`POST /detect/`, `GET /medicines/`) → Supabase PostgreSQL. **Mickie designed:** the PostgreSQL schema (generic names, brand names, indications, image paths, relations) and the API calls fetching drug info. **Can run:** Mini PC, server, tunnel; retrain YOLO and swap `best.pt`. A senior teammate designed the server and app. Honest status: local demo, no public download, tunnel is a prototype. Shown at BU Open House 2025 (prototype), PRIS 2026 (29–30 Oct 2026, IMPACT Arena), BU Open House 2026. |
+| dc-cellnet | DC-CellNet — Blood Cell Detection: YOLO vs. Faster R-CNN | medical/1 | 3 | in-progress | Research 2025–2026. 12 YOLO checkpoints (YOLO26m, YOLO11m, YOLOv8m/l) vs fine-tuned Faster R-CNN (ResNet-50-FPN), 3 classes (RBC, WBC, platelets). YOLO26m best: 89.2% mAP50, 83.9% F1 on held-out test, +6.9 F1 over Faster R-CNN. Reproducible Python CLI eval pipeline (ranked reports, generalization-gap analysis, score/NMS sweeps). Class imbalance (RBC = 85% of labels) drives false positives. github https://github.com/popongfm/DC-CellNet |
+| hospital-system | Hospital Information System | medical/2 | – | done | AIE313 final project, end to end. Supabase, role-based access (patients, doctors, pharmacists, nurses, technicians, admins). Mickie designed the schema (21 tables, 10 views, RLS) and a read-only AI chat assistant answering from views, proposing appointments saved only after user confirms. Docker image on Render; GitHub Actions runs DB, Edge Function, Playwright and e2e tests before deploy. |
+| ispace-lunar-workshop | ispace Lunar Mission Workshop | space/0 | 2 | done | Sep 2026. One of 31 participants selected from an open online application; with ispace Inc., NSTDA, GISTDA, Kasetsart University. Proposed a lunar biology payload using the cnidarian *Hydra* to study adaptation to lunar gravity and radiation. |
+| grb-cubesat | Gamma-Ray Burst CubeSat | space/1 | – | done | GISTDA School Satellite Competition, Dec 2025. Team lead of 5. 6U CubeSat concept detecting gamma-ray bursts with coded aperture imaging; turned research into payload requirements; designed system architecture incl. a CZT detector payload. |
+| turtlebot3-person-detection | TurtleBot3 Person Detection | robotics/0 | – | done | AIE495 final project, team of 3, role: project manager (also developed the concept). Two ROS 2 Humble Python nodes: odometry distance tracker; YOLO26 on the camera feed answering `/detect_person` with count, position, confidence. Tested in Gazebo. |
+| amr-iiot | Factory AMR Prototype | robotics/1 | – | in-progress | IIoT. Dispatches AMRs from QC to the loading dock; three user groups (QC staff, truck drivers, managers via dashboard). BLE indoor localization experiment designed by the advisor: Mickie measured and placed anchors, collected ground-truth positions, helped form hypotheses for later rounds. RSSI from four ESP32 anchors, raw vs filtered, with confidence. |
+| fraud-analytics-pipeline | Fraud Analytics Pipeline | data/0 | – | done | AIE321 final project, end to end. ~1.85M simulated card transactions → PostgreSQL 16 (Docker Compose); features: time of day, channel, Haversine distance; ~11 summary tables to Google Sheets → Looker Studio. One command `run_pipeline.py`. |
+| visionquest-chat-portfolio | VISIONQUEST Chat Portfolio | data/1 | – | done | AIE312 final project, team of 3; role: lead, AI and CI/CD. AI "Vision" answers from real team data and says "no data" instead of guessing. Built prompt → Gemini → streaming path; 12-question AI eval (12/12 passed on live site, pass mark 10); GitHub Actions: typecheck, lint, tests on real PostgreSQL, Docker Hub image, Supabase migration, Render deploy, smoke test. Teammates built backend/DB and frontend. |
+| thai-transport-volumes | Thai Transport Volumes | data/2 | – | done | AIE314/AIE315 final project, group of 3. Road, water, rail and air passenger records; each member owned a question. Mickie built the workflow and pipeline: modular code, one `run_all.py` rebuilding datasets and figures from raw files, 35 pytest tests. |
+| game-genre-prediction | Game Genre Prediction | data/3 | – | done | AIE225, May 2026. Co-designed PDPA-compliant survey, 109 responses; pandas clean/train/visualize pipeline; multi-label Random Forest over 8 genres, best F1 0.62 (RPG), 0.61 (MOBA); class imbalance explains low minority recall. |
+| community-discord-bot | Community Management Discord Bot | data/4 | – | done | Freelance paid contract, Jul 2026 – Jan 2027. discord.py bot for a gaming creator's 160-member community: form registration → officer approval buttons → auto roles and nickname sync; absences and voice head counts; gspread to Google Sheets with serialized writes, validation, automatic CSV backups; Thai and English commands share one implementation; local unit tests without Discord/Google credentials. |
 
+Not stars (they appear only in the Chronicle in Task 6): the Tic-Tac-Toe robot demo, the hackathons, the EPE bootcamp, the Open Houses, PRIS, the EPE x BU Showcase and the certificates. LUCIEN, MyMedicine and the Drive OCR pipeline are left out because Mickie's own portfolio leaves them out.
+
+- [ ] **Step 0:** Copy `CV.pdf` and `Portfolio_Arcane_Tech.pdf` into `docs/content-sources/` (do **not** put them in `public/`).
 - [ ] **Step 1: Write failing unit tests:**
   - `runes.test.ts`:
     - `FUTHARK.length === 24` (spread into chars)
@@ -242,7 +246,9 @@ Project entries (EN title · constellation/order · featured · status · known 
 Copy (EN, exact):
 - eyebrow: "AI ENGINEERING & DATA SCIENCE · BANGKOK UNIVERSITY"
 - h1: "Reading the sky, *building* with it."
-- body: "I build AI for medicine, machines that move, and missions that look up. Each star is a project, each rune a meaning — follow a constellation, or skip straight to the work."
+- body: "I train vision models and get them running behind a real app — end to end, from data preparation and database design to training, evaluation and deployment, with a focus on medical computer vision. Each star here is a project, each rune a meaning."
+- status line: "Looking for a 6-month Data Science or MLOps co-op from June 2027"
+- three proof stats (Plex Mono numbers in gold, small labels): "89.2%" / "mAP50 on blood cell detection"; "60" / "trainees supported in an AI bootcamp"; "1 of 31" / "selected for the ispace Lunar Mission Workshop"
 - CTAs: "BEGIN THE JOURNEY" (`href="#journey"`) and "QUICK VIEW" (`href="/work"`)
 - caption under the runic name: "“POPONG” IN ELDER FUTHARK"
 
@@ -274,9 +280,10 @@ Below 1100px: stack text → ring (scaled) → stones.
 - Produces: `ProjectBody.astro` props `{ project: LocalizedProject; locale; headingLevel: 1 | 2 }`. It renders the rune, title, status badge, role, year, tools, links, images and body, and the fallback notice when `isFallback`. Reused by the panel in Task 8 via a server-rendered `<template id="tpl-<slug>">` on `/`.
 
 - [ ] **Step 1: Failing e2e:**
-  - `/work` has 4 group headings in rune order ᚢ ᛏ ᚱ ᚨ with 4/2/3/4 items
+  - `/work` has 4 group headings in rune order ᚢ ᛏ ᚱ ᚨ with 3/2/2/5 items
   - `/work/grb-cubesat` h1 is "Gamma-Ray Burst CubeSat" and the page text has no "ANTARES"
-  - `/work/tictactoe-robot` contains "did not develop the full system"
+  - `/work/medi-ident-ai` contains "A senior teammate designed the server and the app" and the status badge "In progress"
+  - no `/work/*` page or `/cv` contains `+66` (phone)
   - `/work/dc-cellnet` has a link to `https://github.com/popongfm/DC-CellNet`
 - [ ] **Step 2:** Run → FAIL. **Step 3:** Implement with `getStaticPaths` from `getProjects`. **Step 4:** Run → PASS.
 - [ ] **Step 5:** Commit `feat: work index and project detail pages`.
@@ -294,11 +301,23 @@ Below 1100px: stack text → ring (scaled) → stones.
     - `text` is `[TODO: Mickie]` until supplied
     - `image` is undefined until Mickie supplies the file at `public/tarot/<id>.webp` (spec: portrait ~7:12, ≥1500px tall)
   - Each card is a `<button aria-expanded>` that flips (CSS 3D, or an instant swap under reduced motion) to reveal the text. The SVG gold frame (border, numeral top, name and rune bottom) wraps either the image or the line-art placeholder (a simple gold-line star/figure motif, original).
-  - `Skills.astro` has `id="skills"` and lists the union of all project `tools`, grouped by rune constellation
+  - `Skills.astro` has `id="skills"`, under the rune ᚲ, with the same groups as the CV Skills (from the portfolio PDF)
   - `Contact.astro` has `id="contact"`, with the rune ᚷ, email `mailto:`, GitHub and LinkedIn
   - `Cv.astro`:
     - HTML CV: education "B.Eng. AI Engineering and Data Science, Bangkok University, 2024–2028 (expected)"
-    - roles from the profile: hackathon Technical Assistant ×3 with names, Open House 2025 staff, PRIS 2026 exhibitor, ispace workshop participant
+    - GPAX 3.36; coursework line from the portfolio PDF
+    - **Chronicle** (also rendered on `/about` under Skills), reverse-chronological, copy from the portfolio PDF "Events and activities":
+      - PERSPECTIVE by Black Dot: Tic-Tac-Toe robot demo (operator; role sentence from Global Constraints)
+      - BU Open House 2026 (exhibitor)
+      - PRIS 2026 (exhibitor, 29–30 Oct 2026)
+      - ispace Lunar Mission Workshop (Sep 2026)
+      - BU x EPE Packaging AI Bootcamp & Workshop (technical and teaching assistant, Aug–Sep 2026, 60 employees)
+      - EPE x BU AI Showcase & Awards 2026 (guest)
+      - BU x SCG Hackathon Route Optimization (technical assistant, 2026)
+      - AI Hackathon Elephant Identification (Staff Technique, 25–26 Oct 2025)
+      - BU Open House 2025 (two roles)
+    - **Certificates:** Mathematics for Data Science (Skooldio, 30 Oct 2025); Python Programming Mastery (Skooldio, 20 Nov 2025, part of a four-course track)
+    - **Skills** groups exactly as in the portfolio PDF: Models, Deployment, MLOps and DevOps, Data, Robotics, Tools, Languages, Interests. **Omit the CV PDF's "Edge Deployment: NVIDIA Jetson" line.**
     - shows a "Download PDF" link only if `public/cv.pdf` exists at build time (`fs.existsSync`)
 - [ ] **Step 1: Failing e2e:**
   - three cards in order 0, I, XVII
@@ -349,7 +368,7 @@ Mapping:
     - medical points `[[-0.633,-0.4],[-0.433,-0.55],[-0.233,-0.433],[-0.133,-0.2],[-0.3,-0.067]]`, lines `[[0,1,2,3,4]]`
     - space points `[[0.333,-0.55],[0.167,-0.7],[0.5,-0.667],[0.333,-0.317],[0.367,-0.1]]`, lines `[[1,0,2],[0,3,4]]`
     - robotics points `[[-0.533,0.367],[-0.3,0.233],[-0.067,0.4],[0.167,0.283],[0.367,0.45]]`, lines `[[0,1,2,3,4]]`
-    - data points `[[0.533,-0.133],[0.667,0.033],[0.617,0.233],[0.733,-0.233]]`, lines `[[3,0,1,2]]`
+    - data points `[[0.533,-0.133],[0.667,0.033],[0.617,0.233],[0.733,-0.233],[0.45,0.15]]`, lines `[[3,0,1,2],[2,4]]`
     - project with `order` i sits on `points[i]`; extra points are decorative
   - `starPosition(constellation, order): [number, number]` (throws if order ≥ points.length)
   - `chooseSkyMode({ webgl2: boolean; width: number }): '3d' | '2d'` ('3d' iff `webgl2 && width >= 768`)
