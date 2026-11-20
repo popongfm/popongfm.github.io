@@ -2,12 +2,16 @@
 import { site, type Locale } from '../data/site';
 import { toRunes } from '../lib/runic';
 import { t } from '../i18n/ui';
+import Medallion from './Medallion.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const runic = toRunes(site.name.split(' ')[0]);
 ---
 <div class="hero-text" data-journey-inert>
-  <p class="runic"><span class="rune" aria-hidden="true">{runic}</span><span class="cap">“POPONG” IN ELDER FUTHARK</span></p>
+  <div class="ident">
+    <Medallion />
+    <p class="runic"><span class="rune" aria-hidden="true">{runic}</span><span class="cap">“POPONG” IN ELDER FUTHARK</span></p>
+  </div>
   <p class="eyebrow">AI ENGINEERING &amp; DATA SCIENCE · BANGKOK UNIVERSITY</p>
   <h1>Reading the sky,<br /><i>building</i> with it.</h1>
   <p class="lead">I train vision models and get them running behind a real app — end to end, from data preparation and database design to training, evaluation and deployment, with a focus on medical computer vision. Each star here is a project, each rune a meaning.</p>
@@ -24,7 +28,8 @@ const runic = toRunes(site.name.split(' ')[0]);
 </div>
 <style>
   .hero-text { display: flex; flex-direction: column; gap: 20px; max-width: 560px; }
-  .runic { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0; }
+  .ident { display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap; margin-left: -22px; }
+  .runic { display: flex; flex-direction: column; align-items: flex-start; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0; }
   .runic .rune { font-size: 26px; letter-spacing: .35em; color: var(--gold-3); text-shadow: 0 0 16px var(--halo); }
   .runic .cap, .eyebrow { font-size: 11px; letter-spacing: .2em; color: var(--muted); }
   .eyebrow { margin: 0; font-size: 12px; letter-spacing: .24em; color: var(--gold-2); }

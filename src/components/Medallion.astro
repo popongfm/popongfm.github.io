@@ -1,0 +1,23 @@
+---
+import { FUTHARK, LIT_RUNES } from '../data/runes';
+const R = 78; // rune orbit radius in px (box 176)
+const runes = [...FUTHARK].map((ch, j) => {
+  const deg = (j / 24) * 360;
+  return { ch, deg, lit: LIT_RUNES.includes(ch) };
+});
+---
+<div class="medallion">
+  <div class="orbit" aria-hidden="true">
+    {runes.map((r) => <span class:list={{ lit: r.lit }} style={`transform: rotate(${r.deg}deg) translateY(-${R}px)`}>{r.ch}</span>)}
+  </div>
+  <img src="/portrait/portrait-circle.webp" width="640" height="640" alt="Portrait of Popong Faimoon" decoding="async" fetchpriority="high" />
+</div>
+<style>
+  .medallion { position: relative; width: 176px; height: 176px; flex-shrink: 0; display: grid; place-items: center; }
+  .medallion::before { content: ''; position: absolute; inset: 22px; border-radius: 50%; border: 1px solid var(--gold); box-shadow: 0 0 24px rgba(217, 185, 110, .25), inset 0 0 0 4px var(--ink), inset 0 0 0 5px rgba(217, 185, 110, .45); z-index: 2; pointer-events: none; }
+  .medallion img { width: 124px; height: 124px; border-radius: 50%; object-fit: cover; display: block; }
+  .orbit { position: absolute; inset: 0; animation: spin 90s linear infinite; }
+  .orbit span { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; display: grid; place-items: center; font-family: var(--font-rune); font-size: 11px; line-height: 1; color: var(--rune-off); }
+  .orbit span.lit { color: var(--gold-3); text-shadow: 0 0 8px var(--halo); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
