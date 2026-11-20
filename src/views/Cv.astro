@@ -1,8 +1,46 @@
 ---
+import { existsSync } from 'node:fs';
 import Base from '../layouts/Base.astro';
-import type { Locale } from '../data/site';
-import { t } from '../i18n/ui';
+import Skills from '../components/Skills.astro';
+import Chronicle from '../components/Chronicle.astro';
+import { education, CERTIFICATES } from '../data/cv';
+import { site, type Locale } from '../data/site';
+import { getProjects } from '../lib/projects';
+import { t, localePath } from '../i18n/ui';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
+const hasPdf = existsSync('public/cv.pdf');
+const projects = await getProjects(locale);
 ---
-<Base title={`${t(locale, 'cv.title')} — Popong Faimoon`} {locale}><div class="wrap"><h1>{t(locale, 'cv.title')}</h1></div></Base>
+<Base title={`${t(locale, 'cv.title')} — Popong Faimoon`} {locale}>
+  <div class="wrap cv">
+    <header>
+      <h1>{site.name}</h1>
+      <p class="sub">AI Engineering &amp; Data Science Student · Computer Vision · Medical AI · Pathum Thani, Thailand</p>
+      <p><a href={`mailto:${site.email}`}>{site.email}</a> · <a href={site.github}>github.com/popongfm</a> · <a href={site.linkedin}>LinkedIn</a></p>
+      {hasPdf && <a class="dl" href="/cv.pdf" download>{t(locale, 'cv.download')}</a>}
+    </header>
+    <section class="block"><h2>{t(locale, 'cv.education')}</h2>
+      <h3>{education.degree}</h3><p>{education.school} · {education.years} · {education.gpax}</p><p>{education.coursework}</p>
+    </section>
+    <section class="block"><h2>{t(locale, 'work.title')}</h2>
+      <ul class="plist">{projects.map((p) => <li><a href={localePath(locale, `/work/${p.slug}`)}>{p.title}</a> <span>— {p.context}, {p.year}. {p.role}</span></li>)}</ul>
+    </section>
+    <Skills {locale} />
+    <Chronicle {locale} />
+    <section class="block"><h2>{t(locale, 'certs.title')}</h2>
+      <ul class="plist">{CERTIFICATES.map((c) => <li><strong>{c.title}</strong> <span>— {c.issuer}, {c.when}.{c.note ? ` ${c.note}` : ''}</span></li>)}</ul>
+    </section>
+  </div>
+</Base>
+<style>
+  .cv { padding-block: 24px 64px; display: grid; gap: 56px; max-width: 980px; }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(44px, 6vw, 64px); margin: 0; }
+  .sub { color: var(--gold-2); font-size: 13px; letter-spacing: .08em; }
+  .dl { display: inline-block; margin-top: 8px; background: var(--gold); color: #141018; padding: 12px 20px; text-decoration: none; border-radius: 2px; }
+  .cv :global(.block h2) { font-family: var(--font-display); font-weight: 500; font-size: 32px; margin: 0 0 16px; border-bottom: 1px solid var(--hairline); padding-bottom: 8px; }
+  .cv h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin: 0; }
+  .cv p, .plist span { color: var(--text-2); font-size: 14px; }
+  .plist { padding-left: 18px; display: grid; gap: 10px; margin: 0; }
+  .plist strong { color: var(--cream); font-weight: 500; }
+</style>

@@ -1,0 +1,23 @@
+---
+import { CHRONICLE } from '../data/cv';
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<section id="chronicle" class="block" aria-labelledby="chron-h">
+  <h2 id="chron-h"><span class="rune" aria-hidden="true">ᛞ</span> {t(locale, 'chronicle.title')}</h2>
+  <ol class="chron">
+    {CHRONICLE.map((e) => (
+      <li><p class="when">{e.when} · {e.role}</p><h3>{e.title}</h3><p>{e.text}</p></li>
+    ))}
+  </ol>
+</section>
+<style>
+  .chron { list-style: none; margin: 0; padding: 0 0 0 20px; border-left: 1px solid #3A3426; display: grid; gap: 24px; }
+  .chron li { position: relative; }
+  .chron li::before { content: ''; position: absolute; left: -25px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--gold-3); box-shadow: 0 0 10px var(--halo); }
+  .when { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .chron h3 { margin: 2px 0 4px; font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--cream); }
+  .chron p:last-child { margin: 0; font-size: 13.5px; color: var(--text-2); line-height: 1.7; }
+</style>
