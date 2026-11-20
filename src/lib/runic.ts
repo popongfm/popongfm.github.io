@@ -15,3 +15,29 @@ export function toRunes(text: string): string {
   }
   return out;
 }
+
+/** Frame 0 = all runes, last frame = plain text; frame k reveals the first ceil(k/steps·len) characters. */
+export function decodeFrames(text: string, steps: number): string[] {
+  const chars = [...text];
+  const frames: string[] = [];
+  for (let k = 0; k <= steps; k++) {
+    const n = Math.ceil((k / steps) * chars.length);
+    frames.push(chars.slice(0, n).join('') + toRunes(chars.slice(n).join('')));
+  }
+  return frames;
+}
+
+export function runDecode(el: HTMLElement, text: string, opts: { reducedMotion: boolean; durationMs?: number }): void {
+  if (opts.reducedMotion || typeof requestAnimationFrame === 'undefined') { el.textContent = text; return; }
+  const duration = opts.durationMs ?? 700;
+  const steps = Math.max(4, [...text].length);
+  const frames = decodeFrames(text, steps);
+  const start = performance.now();
+  const tick = (now: number) => {
+    const k = Math.min(steps, Math.floor(((now - start) / duration) * steps));
+    el.textContent = frames[k];
+    if (k < steps) requestAnimationFrame(tick);
+  };
+  el.textContent = frames[0];
+  requestAnimationFrame(tick);
+}

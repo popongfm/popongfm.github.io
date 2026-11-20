@@ -15,3 +15,22 @@ describe('toRunes', () => {
     expect(toRunes('ระบบ')).toBe('ระบบ');
   });
 });
+
+import { decodeFrames, runDecode } from '../../src/lib/runic';
+
+describe('decodeFrames', () => {
+  it('reveals latin left to right', () => {
+    expect(decodeFrames('ab', 2)).toEqual(['ᚨᛒ', 'aᛒ', 'ab']);
+  });
+  it('non-latin text never turns into runes', () => {
+    for (const f of decodeFrames('ระบบ', 5)) expect(f).toBe('ระบบ');
+  });
+});
+
+describe('runDecode', () => {
+  it('sets the final text at once under reduced motion', () => {
+    const el = { textContent: '' } as unknown as HTMLElement;
+    runDecode(el, 'Medi-Ident AI', { reducedMotion: true });
+    expect(el.textContent).toBe('Medi-Ident AI');
+  });
+});
