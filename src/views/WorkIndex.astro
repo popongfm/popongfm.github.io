@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Locale } from '../data/site';
+import { getProjects } from '../lib/projects';
+import { RUNES, CONSTELLATION_ORDER, CONSTELLATION_LABEL } from '../data/runes';
+import { t, localePath } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const all = await getProjects(locale);
+---
+<Base title={`${t(locale, 'work.title')} — Popong Faimoon`} {locale}>
+  <div class="wrap work">
+    <h1>{t(locale, 'work.title')}</h1>
+    <p class="intro">{t(locale, 'work.intro')}</p>
+    {CONSTELLATION_ORDER.map((c) => (
+      <section class="group" aria-labelledby={`g-${c}`}>
+        <h2 id={`g-${c}`}><span class="rune" aria-hidden="true">{RUNES[c].char}</span> {CONSTELLATION_LABEL[c][locale]} <small>{RUNES[c].name} · {RUNES[c].meaning[locale]}</small></h2>
+        <ul>
+          {all.filter((p) => p.constellation === c).map((p) => (
+            <li>
+              <a href={localePath(locale, `/work/${p.slug}`)}><span class="t">{p.title}</span>{p.status === 'in-progress' && <span class="badge">{t(locale, 'status.inProgress')}</span>}</a>
+              <span class="ctx">{p.context} · {p.year}</span>
+              <p>{p.summary}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>
+<style>
+  .work { padding-block: 24px 64px; }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(44px, 6vw, 72px); margin: 0; }
+  .intro { color: var(--text-2); margin: 8px 0 40px; }
+  .group { margin-bottom: 48px; }
+  .group h2 { font-family: var(--font-display); font-weight: 500; font-size: 30px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--hairline); padding-bottom: 10px; }
+  .group h2 .rune { color: var(--gold-3); text-shadow: 0 0 14px var(--halo); font-size: 28px; }
+  .group h2 small { font-family: var(--font-body); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .group ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+  .group li { background: var(--panel); border: 1px solid var(--hairline); padding: 18px 20px; border-radius: 4px; }
+  .group li a { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; text-decoration: none; color: var(--cream); font-family: var(--font-display); font-size: 22px; }
+  .group li a:hover { color: var(--gold-3); }
+  .ctx { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  .group li p { margin: 8px 0 0; font-size: 13px; color: var(--text-2); }
+  .badge { font-family: var(--font-body); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); background: var(--gold-2); padding: 2px 8px; border-radius: 999px; }
+</style>

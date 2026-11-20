@@ -1,0 +1,36 @@
+---
+import { site, type Locale } from '../data/site';
+import { t, localePath, altLocale, stripLocale } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const alt = altLocale(locale);
+const altHref = localePath(alt, stripLocale(Astro.url.pathname));
+---
+<header class="site-header">
+  <nav aria-label="Main" class="wrap nav">
+    <a class="brand" href={localePath(locale, '/')}>
+      <span class="rune" aria-hidden="true">ᛗ</span>
+      <span class="brand-name">{site.name}</span>
+    </a>
+    <ul class="links">
+      <li><a href={localePath(locale, '/work')}>{t(locale, 'nav.work')}</a></li>
+      <li><a href={localePath(locale, '/about')}>{t(locale, 'nav.about')}</a></li>
+      <li><a href={localePath(locale, '/cv')}>{t(locale, 'nav.cv')}</a></li>
+      <li><a href={`${localePath(locale, '/about')}#contact`}>{t(locale, 'nav.contact')}</a></li>
+      <li><a class="lang" href={altHref} hreflang={alt}>EN / ไทย</a></li>
+    </ul>
+  </nav>
+</header>
+<style>
+  .site-header { position: relative; z-index: 20; }
+  :global(html.journey-open) .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 80; background: rgba(10, 14, 28, .88); backdrop-filter: blur(6px); border-bottom: 1px solid var(--hairline); }
+  :global(html.journey-open) .nav { padding-block: 12px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; padding-block: 28px; }
+  .brand { display: flex; gap: 12px; align-items: baseline; text-decoration: none; color: var(--cream); }
+  .brand .rune { color: var(--gold-2); font-size: 22px; }
+  .brand-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: .04em; }
+  .links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; align-items: center; }
+  .links a { color: var(--cream); text-decoration: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; padding: 12px 0; display: inline-block; }
+  .links a:hover { color: var(--gold-3); }
+  .links a.lang { color: var(--gold-2); border: 1px solid #5C5137; padding: 10px 12px; border-radius: 2px; text-transform: none; letter-spacing: .08em; }
+</style>

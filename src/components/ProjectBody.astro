@@ -1,0 +1,47 @@
+---
+import RuneGlyph from './RuneGlyph.astro';
+import { RUNES, CONSTELLATION_LABEL } from '../data/runes';
+import type { LocalizedProject } from '../lib/projects';
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { project: LocalizedProject; locale: Locale; headingLevel: 1 | 2; headingId?: string }
+const { project: p, locale, headingLevel, headingId } = Astro.props;
+const H = headingLevel === 1 ? 'h1' : 'h2';
+---
+<div class="pbody">
+  <p class="meta"><RuneGlyph char={RUNES[p.constellation].char} {locale} size={20} /> <span>{CONSTELLATION_LABEL[p.constellation][locale]} · {p.context} · {p.year}</span></p>
+  <H class="ptitle" id={headingId} data-title={p.title}>{p.title}</H>
+  {p.status === 'in-progress' && <span class="badge">{t(locale, 'status.inProgress')}</span>}
+  {p.isFallback && <p class="fallback" lang="th">{t(locale, 'fallback.notice')}</p>}
+  <p class="summary">{p.summary}</p>
+  <dl class="facts">
+    <div><dt>{t(locale, 'work.role')}</dt><dd>{p.role}</dd></div>
+    {p.tools.length > 0 && <div><dt>{t(locale, 'work.tools')}</dt><dd><ul class="tools">{p.tools.map((x) => <li>{x}</li>)}</ul></dd></div>}
+  </dl>
+  <div class="prose"><slot /></div>
+  {(p.links.github || p.links.demo || p.links.paper) && (
+    <p class="links">
+      {p.links.github && <a href={p.links.github} rel="noopener">Code on GitHub ↗</a>}
+      {p.links.demo && <a href={p.links.demo} rel="noopener">Live demo ↗</a>}
+      {p.links.paper && <a href={p.links.paper} rel="noopener">Paper ↗</a>}
+    </p>
+  )}
+</div>
+<style>
+  .pbody { display: flex; flex-direction: column; gap: 14px; }
+  .meta { margin: 0; display: flex; gap: 10px; align-items: center; font-size: 12px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+  .ptitle { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(34px, 5vw, 56px); line-height: 1.05; color: var(--cream); }
+  .badge { align-self: flex-start; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); background: var(--gold-2); padding: 3px 10px; border-radius: 999px; }
+  .fallback { margin: 0; font-size: 12px; color: var(--gold-3); border: 1px dashed #5C5137; padding: 6px 10px; align-self: flex-start; }
+  .summary { margin: 0; font-size: 16px; color: var(--text-2); line-height: 1.7; }
+  .facts { margin: 0; display: grid; gap: 12px; border-block: 1px solid var(--hairline); padding-block: 14px; }
+  .facts dt { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .facts dd { margin: 4px 0 0; color: var(--cream); font-size: 14px; }
+  .tools { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tools li { border: 1px solid #3A3426; padding: 3px 9px; border-radius: 999px; font-size: 12px; color: var(--text-2); }
+  .prose { color: var(--text-2); font-size: 14.5px; line-height: 1.8; }
+  .prose :global(h2) { font-family: var(--font-display); font-weight: 500; font-size: 26px; color: var(--cream); margin: 28px 0 8px; }
+  .prose :global(strong) { color: var(--gold-3); font-weight: 500; }
+  .prose :global(code) { color: var(--gold-3); }
+  .links { display: flex; gap: 20px; flex-wrap: wrap; margin: 0; }
+</style>

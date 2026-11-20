@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SkyRing from '../components/SkyRing.astro';
+import FeaturedStones from '../components/FeaturedStones.astro';
+import ProjectPanel from '../components/ProjectPanel.astro';
+import ProjectBody from '../components/ProjectBody.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+import TarotSpread from '../components/TarotSpread.astro';
+import { getProjects, getFeatured, getThaiBody } from '../lib/projects';
+import { getEntry, render } from 'astro:content';
+import type { Locale } from '../data/site';
+import { t, localePath } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const projects = await getProjects(locale);
+const featured = await getFeatured(locale);
+const bodies = await Promise.all(projects.map(async (p) => {
+  const th = locale === 'th' ? await getThaiBody(p.slug) : null;
+  return (th ?? (await render((await getEntry('projects', p.slug))!))).Content;
+}));
+let seed = 17;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const field = Array.from({ length: 160 }, () => `${Math.round(rnd() * 1600)}px ${Math.round(rnd() * 1100)}px 0 ${rnd() > 0.92 ? 1 : 0}px rgba(244,236,214,${(0.22 + rnd() * 0.55).toFixed(2)})`).join(',');
+---
+<Base title="Popong Faimoon — Portfolio" {locale}>
+  <div class="starfield" aria-hidden="true" style={`--field:${field}`}></div>
+  <section class="wrap home">
+    <Hero {locale} />
+    <SkyRing {projects} {locale} />
+  </section>
+  <FeaturedStones projects={featured} {locale} />
+  <ProjectPanel {locale} />
+  {projects.map((p, i) => {
+    const Content = bodies[i];
+    return (
+      <template id={`tpl-${p.slug}`}>
+        <ProjectBody project={p} {locale} headingLevel={2} headingId="panel-title"><Content /></ProjectBody>
+        <a class="full" href={localePath(locale, `/work/${p.slug}`)}>{t(locale, 'sky.open')} →</a>
+      </template>
+    );
+  })}
+  <template id="tpl-panel-skills"><h2 id="panel-title" class="p-h" data-title={t(locale, 'skills.title')}>{t(locale, 'skills.title')}</h2><Skills {locale} /></template>
+  <template id="tpl-panel-about"><h2 id="panel-title" class="p-h" data-title={t(locale, 'about.title')}>{t(locale, 'about.title')}</h2><TarotSpread {locale} /><a class="full" href={localePath(locale, '/about')}>{t(locale, 'sky.open')} →</a></template>
+  <template id="tpl-panel-contact"><h2 id="panel-title" class="p-h" data-title={t(locale, 'contact.title')}>{t(locale, 'contact.title')}</h2><Contact {locale} /></template>
+</Base>
+<script>
+  import { initSky } from '../islands/sky/SkyController';
+  const root = document.getElementById('sky');
+  if (root) initSky(root, {
+    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    load3d: () => import('../islands/sky/Sky3D').then((m) => m.default),
+  });
+</script>
+<style>
+  .starfield { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle 640px at 70% 42%, #17213C 0%, var(--ink) 75%); overflow: hidden; }
+  .starfield::before { content: ''; position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; box-shadow: var(--field); }
+  .home { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 24px 64px; }
+  @media (min-width: 1100px) { .home { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+  :global(#panel .p-h) { font-family: var(--font-display); font-weight: 500; font-size: 40px; margin: 0 0 20px; }
+  :global(#panel #skills h2), :global(#panel #contact h2) { display: none; }
+  :global(html.journey-open) { overflow: hidden; }
+</style>
