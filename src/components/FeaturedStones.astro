@@ -7,7 +7,7 @@ import { t, localePath } from '../i18n/ui';
 interface Props { projects: LocalizedProject[]; locale: Locale }
 const { projects, locale } = Astro.props;
 ---
-<section class="wrap" aria-labelledby="featured-h">
+<section class="wrap" aria-labelledby="featured-h" data-journey-inert>
   <h2 id="featured-h" class="eyebrow">{t(locale, 'featured.label')}</h2>
   <ul class="stones">
     {projects.map((p) => (

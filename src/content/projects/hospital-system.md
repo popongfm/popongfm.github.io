@@ -9,6 +9,7 @@ role: { en: "Built end to end: schema, AI assistant, Docker deploy and CI." }
 context: "AIE313 final project"
 year: "2026"
 tools: ["PostgreSQL", "Supabase", "Row-level security", "Edge Functions", "Docker", "Render", "GitHub Actions", "Playwright"]
+links: { github: "https://github.com/popongfm/AIE313-FinalProj_HospitalSystem" }
 ---
 Role-based access for patients, doctors, pharmacists, nurses, technicians and admins. I designed the PostgreSQL schema (21 tables, 10 views, row-level security) and a read-only AI chat assistant that answers from the views and proposes appointments, saved only after the user confirms.
 

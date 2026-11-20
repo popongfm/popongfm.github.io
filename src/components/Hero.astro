@@ -6,7 +6,7 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const runic = toRunes(site.name.split(' ')[0]);
 ---
-<div class="hero-text">
+<div class="hero-text" data-journey-inert>
   <p class="runic"><span class="rune" aria-hidden="true">{runic}</span><span class="cap">“POPONG” IN ELDER FUTHARK</span></p>
   <p class="eyebrow">AI ENGINEERING &amp; DATA SCIENCE · BANGKOK UNIVERSITY</p>
   <h1>Reading the sky,<br /><i>building</i> with it.</h1>

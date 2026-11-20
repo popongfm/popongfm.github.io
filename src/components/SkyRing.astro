@@ -64,14 +64,14 @@ const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
 <style>
   .sky-shell { position: relative; }
   .sky-bar { display: none; }
-  .sky-shell.is-journey { position: fixed; inset: 0; z-index: 50; background: radial-gradient(circle at 50% 50%, #17213C 0%, var(--ink) 70%); display: grid; place-items: center; padding: 64px 16px 16px; overflow: hidden; }
-  .sky-shell.is-journey .sky-bar { display: flex; position: absolute; top: 0; left: 0; right: 0; gap: 12px; align-items: center; justify-content: flex-end; padding: 12px 16px; z-index: 60; flex-wrap: wrap; }
+  .sky-shell.is-journey { position: fixed; inset: 0; z-index: 50; background: radial-gradient(circle at 50% 50%, #17213C 0%, var(--ink) 70%); display: grid; place-items: center; padding: calc(var(--header-h, 0px) + 8px) 16px 72px; overflow: hidden; }
+  .sky-shell.is-journey .sky-bar { display: flex; position: absolute; bottom: 0; left: 0; right: 0; gap: 12px; align-items: center; justify-content: flex-end; padding: 12px 16px; z-index: 60; flex-wrap: wrap; }
   .sky-hint { margin-right: auto; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
   .sky-btn { font: inherit; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); background: rgba(15, 20, 38, .85); border: 1px solid #5C5137; padding: 10px 14px; min-height: 44px; border-radius: 2px; cursor: pointer; }
   .sky-btn:hover { border-color: var(--gold-3); color: var(--gold-3); }
   .recenter { display: none; }
   .sky-shell.is-journey:has(#sky[data-mode="3d"]) .recenter { display: inline-block; }
-  .sky-shell.is-journey #sky { width: min(92vh - 80px, 92vw, 900px); }
+  .sky-shell.is-journey #sky { width: min(100vh - var(--header-h, 0px) - 96px, 92vw, 900px); }
   #sky[data-mode="3d"] .chart, #sky[data-mode="3d"] .ring, #sky[data-mode="3d"] .c-label { opacity: 0; pointer-events: none; }
   #sky[data-mode="3d"] .ring a.ring-rune { pointer-events: auto; opacity: .01; }
   #sky[data-mode="3d"] .star .dot { opacity: 0; }

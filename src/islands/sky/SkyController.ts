@@ -32,11 +32,16 @@ export function initSky(root: HTMLElement, opts: Opts) {
     root.dataset.journey = 'true';
     shell.classList.add('is-journey');
     document.documentElement.classList.add('journey-open');
+    const header = document.querySelector<HTMLElement>('.site-header');
+    document.documentElement.style.setProperty('--header-h', `${header?.offsetHeight ?? 0}px`);
+    document.querySelectorAll('[data-journey-inert]').forEach((el) => el.setAttribute('inert', ''));
     mode = forced ?? chooseSkyMode({ webgl2: detectWebGL2(), width: innerWidth });
     root.dataset.mode = mode;
     if (mode === '3d') {
       try {
         const mod = await opts.load3d();
+        if (root.dataset.journey !== 'true' || mode !== '3d') return; // left the sky while loading
+        handle?.destroy(); handle = null;
         const projects: SkyProject[] = stars().map((s) => ({
           slug: s.dataset.slug!, constellation: s.dataset.constellation as SkyProject['constellation'],
           order: Number(s.dataset.order), brightness: Number(s.dataset.brightness) as 1 | 2 | 3, title: s.getAttribute('aria-label')!,
@@ -60,6 +65,8 @@ export function initSky(root: HTMLElement, opts: Opts) {
     root.dataset.journey = 'false';
     shell.classList.remove('is-journey');
     document.documentElement.classList.remove('journey-open');
+    document.querySelectorAll('[data-journey-inert]').forEach((el) => el.removeAttribute('inert'));
+    mode = null;
     handle?.destroy(); handle = null;
     root.querySelector('.canvas-host')!.innerHTML = '';
     root.dataset.mode = 'static';

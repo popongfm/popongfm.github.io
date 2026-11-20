@@ -23,6 +23,8 @@ const altHref = localePath(alt, stripLocale(Astro.url.pathname));
 </header>
 <style>
   .site-header { position: relative; z-index: 20; }
+  :global(html.journey-open) .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 80; background: rgba(10, 14, 28, .88); backdrop-filter: blur(6px); border-bottom: 1px solid var(--hairline); }
+  :global(html.journey-open) .nav { padding-block: 12px; }
   .nav { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; padding-block: 28px; }
   .brand { display: flex; gap: 12px; align-items: baseline; text-decoration: none; color: var(--cream); }
   .brand .rune { color: var(--gold-2); font-size: 22px; }

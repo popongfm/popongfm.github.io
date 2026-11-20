@@ -12,6 +12,8 @@ for (const url of ['/', '/work', '/work/medi-ident-ai', '/about', '/cv', '/th/']
 test('axe open panel', async ({ page }) => {
   await page.goto('/?sky=2d#star-dc-cellnet');
   await expect(page.locator('#panel')).toBeVisible();
+  await expect(page.locator('#panel-title')).toHaveText('DC-CellNet');
+  await page.waitForFunction(() => document.getElementById('panel')!.getAnimations({ subtree: true }).every((a) => a.playState !== 'running'));
   const r = await new AxeBuilder({ page }).include('#panel').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(r.violations.map((v) => v.id)).toEqual([]);
 });

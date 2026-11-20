@@ -26,10 +26,10 @@ const abs = (l: Locale) => new URL(localePath(l, path), Astro.site).href;
   <slot name="head" />
 </head>
 <body>
-  <a class="skip-link" href="#main">{t(locale, 'skip')}</a>
+  <a class="skip-link" href="#main" data-journey-inert>{t(locale, 'skip')}</a>
   <Nav locale={locale} />
   <main id="main"><slot /></main>
-  <footer class="wrap footer"><span class="rune" aria-hidden="true">ᚷ</span> Popong Faimoon · Pathum Thani, Thailand</footer>
+  <footer class="wrap footer" data-journey-inert><span class="rune" aria-hidden="true">ᚷ</span> Popong Faimoon · Pathum Thani, Thailand</footer>
   <style>
     .footer { padding-block: 48px; color: var(--muted); font-size: 12px; letter-spacing: .1em; }
     .footer .rune { color: var(--gold-2); margin-right: 8px; }

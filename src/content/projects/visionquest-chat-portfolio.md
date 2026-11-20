@@ -9,5 +9,6 @@ role: { en: "Lead, AI and CI/CD in a team of 3. Teammates built the backend and 
 context: "AIE312 final project"
 year: "2026"
 tools: ["Gemini", "Streaming", "GitHub Actions", "Docker", "Supabase", "Render"]
+links: { github: "https://github.com/popongfm/AIE312-ChatBot-VISIONQUEST-", demo: "https://visionquest-htn7.onrender.com/" }
 ---
 I led the team and built the prompt-to-Gemini-to-streaming path, a 12-question AI evaluation (12 of 12 passed against the live site, pass mark 10), and a GitHub Actions pipeline: typecheck, lint, tests on real PostgreSQL, a Docker image pushed to Docker Hub, database migration on Supabase, a Render deploy and a smoke test.
