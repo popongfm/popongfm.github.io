@@ -1,0 +1,31 @@
+---
+import '../styles/tokens.css';
+import Nav from '../components/Nav.astro';
+import type { Locale } from '../data/site';
+interface Props { title: string; locale: Locale; description?: string }
+const { title, locale, description = 'Popong Faimoon — AI Engineering & Data Science student. Medical computer vision, robotics and space.' } = Astro.props;
+---
+<!doctype html>
+<html lang={locale}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0E1C'/%3E%3Cpath d='M16 4l2.5 9.5L28 16l-9.5 2.5L16 28l-2.5-9.5L4 16l9.5-2.5z' fill='%23E3C886'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500&family=Noto+Serif+Thai:wght@500&family=Noto+Sans+Runic&display=swap" />
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <Nav locale={locale} />
+  <main id="main"><slot /></main>
+  <footer class="wrap footer"><span class="rune" aria-hidden="true">ᚷ</span> Popong Faimoon · Pathum Thani, Thailand</footer>
+  <style>
+    .footer { padding-block: 48px; color: var(--muted); font-size: 12px; letter-spacing: .1em; }
+    .footer .rune { color: var(--gold-2); margin-right: 8px; }
+  </style>
+</body>
+</html>
