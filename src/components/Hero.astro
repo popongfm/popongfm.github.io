@@ -1,0 +1,45 @@
+---
+import { site, type Locale } from '../data/site';
+import { toRunes } from '../lib/runic';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const runic = toRunes(site.name.split(' ')[0]);
+---
+<div class="hero-text">
+  <p class="runic"><span class="rune" aria-hidden="true">{runic}</span><span class="cap">“POPONG” IN ELDER FUTHARK</span></p>
+  <p class="eyebrow">AI ENGINEERING &amp; DATA SCIENCE · BANGKOK UNIVERSITY</p>
+  <h1>Reading the sky,<br /><i>building</i> with it.</h1>
+  <p class="lead">I train vision models and get them running behind a real app — end to end, from data preparation and database design to training, evaluation and deployment, with a focus on medical computer vision. Each star here is a project, each rune a meaning.</p>
+  <p class="status"><span class="pulse" aria-hidden="true"></span>Looking for a 6-month Data Science or MLOps co-op from June 2027</p>
+  <div class="ctas">
+    <a class="btn primary" href="#journey" data-begin>{t(locale, 'cta.begin')}</a>
+    <a class="btn" href={locale === 'th' ? '/th/work' : '/work'}>{t(locale, 'cta.quick')}</a>
+  </div>
+  <dl class="stats">
+    <div><dt>89.2%</dt><dd>mAP50 on blood cell detection</dd></div>
+    <div><dt>60</dt><dd>trainees supported in an AI bootcamp</dd></div>
+    <div><dt>1 of 31</dt><dd>selected for the ispace Lunar Mission Workshop</dd></div>
+  </dl>
+</div>
+<style>
+  .hero-text { display: flex; flex-direction: column; gap: 20px; max-width: 560px; }
+  .runic { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0; }
+  .runic .rune { font-size: 26px; letter-spacing: .35em; color: var(--gold-3); text-shadow: 0 0 16px var(--halo); }
+  .runic .cap, .eyebrow { font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+  .eyebrow { margin: 0; font-size: 12px; letter-spacing: .24em; color: var(--gold-2); }
+  h1 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(48px, 7vw, 84px); line-height: .98; color: var(--cream); }
+  h1 i { color: var(--gold-2); }
+  .lead { margin: 0; font-size: 15px; line-height: 1.75; color: var(--text-2); }
+  .status { margin: 0; display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--gold-3); }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-3); box-shadow: 0 0 10px var(--gold-3); animation: pulse 2.4s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .ctas { display: flex; flex-wrap: wrap; gap: 16px; }
+  .btn { text-decoration: none; border: 1px solid #5C5137; color: var(--cream); padding: 16px 28px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; border-radius: 2px; min-height: 44px; }
+  .btn.primary { background: var(--gold); color: #141018; border-color: var(--gold); font-weight: 500; }
+  .btn.primary:hover { background: var(--gold-3); color: #141018; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 8px 0 0; border-top: 1px solid var(--hairline); padding-top: 18px; }
+  .stats dt { font-family: var(--font-display); font-size: 30px; color: var(--gold-2); }
+  .stats dd { margin: 0; font-size: 11.5px; line-height: 1.45; color: #A9A28E; }
+  @media (max-width: 520px) { .stats { grid-template-columns: 1fr; } }
+</style>

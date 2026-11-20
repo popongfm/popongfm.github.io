@@ -1,7 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SkyRing from '../components/SkyRing.astro';
+import FeaturedStones from '../components/FeaturedStones.astro';
+import { getProjects, getFeatured } from '../lib/projects';
 import type { Locale } from '../data/site';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
+const projects = await getProjects(locale);
+const featured = await getFeatured(locale);
+let seed = 17;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const field = Array.from({ length: 160 }, () => `${Math.round(rnd() * 1600)}px ${Math.round(rnd() * 1100)}px 0 ${rnd() > 0.92 ? 1 : 0}px rgba(244,236,214,${(0.22 + rnd() * 0.55).toFixed(2)})`).join(',');
 ---
-<Base title="Popong Faimoon — Portfolio" {locale}><div class="wrap"><h1>Popong Faimoon</h1></div></Base>
+<Base title="Popong Faimoon — Portfolio" {locale}>
+  <div class="starfield" aria-hidden="true" style={`--field:${field}`}></div>
+  <section class="wrap home">
+    <Hero {locale} />
+    <SkyRing {projects} {locale} />
+  </section>
+  <FeaturedStones projects={featured} {locale} />
+</Base>
+<style>
+  .starfield { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle 640px at 70% 42%, #17213C 0%, var(--ink) 75%); overflow: hidden; }
+  .starfield::before { content: ''; position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; box-shadow: var(--field); }
+  .home { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 24px 64px; }
+  @media (min-width: 1100px) { .home { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+</style>

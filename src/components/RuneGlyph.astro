@@ -1,0 +1,20 @@
+---
+import { runeByChar } from '../data/runes';
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { char: string; locale: Locale; size?: number }
+const { char, locale, size = 24 } = Astro.props;
+const r = runeByChar(char);
+const label = r ? `${r.name} — ${r.meaning[locale]} (${t(locale, 'rune.traditional')})` : char;
+---
+<span class="rune-glyph" tabindex="0" role="img" aria-label={label} style={`--size:${size}px`}>
+  <span class="ch" aria-hidden="true">{char}</span>
+  {r && <span class="tip" aria-hidden="true"><b>{r.name}</b> · {r.meaning[locale]}<small>{t(locale, 'rune.traditional')}</small></span>}
+</span>
+<style>
+  .rune-glyph { position: relative; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-rune); color: var(--gold-3); font-size: var(--size); line-height: 1; cursor: help; }
+  .tip { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); width: max-content; max-width: 220px; background: #141a30; border: 1px solid #5C5137; color: var(--cream); font-family: var(--font-body); font-size: 12px; line-height: 1.5; padding: 8px 12px; border-radius: 4px; display: none; z-index: 30; text-align: left; }
+  .tip b { color: var(--gold-3); font-weight: 500; }
+  .tip small { display: block; color: var(--muted); font-size: 11px; letter-spacing: .06em; }
+  .rune-glyph:hover .tip, .rune-glyph:focus-visible .tip { display: block; }
+</style>

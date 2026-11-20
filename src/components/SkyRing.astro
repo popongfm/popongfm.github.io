@@ -1,0 +1,80 @@
+---
+import { FUTHARK, LIT_RUNES, RUNES, CONSTELLATION_LABEL, runeByChar, type ConstellationId } from '../data/runes';
+import { CONSTELLATIONS, LABEL_AT, starPosition } from '../lib/sky/layout';
+import type { LocalizedProject } from '../lib/projects';
+import type { Locale } from '../data/site';
+import { localePath } from '../i18n/ui';
+interface Props { projects: LocalizedProject[]; locale: Locale }
+const { projects, locale } = Astro.props;
+const H = 1.2; // half-extent of the coordinate box
+const pct = (c: number) => `${(((c + H) / (2 * H)) * 100).toFixed(3)}%`;
+const panelFor: Record<string, { id: string; href: string }> = {
+  'ᚲ': { id: 'skills', href: `${localePath(locale, '/about')}#skills` },
+  'ᛗ': { id: 'about', href: localePath(locale, '/about') },
+  'ᚷ': { id: 'contact', href: `${localePath(locale, '/about')}#contact` },
+};
+const ring = [...FUTHARK].map((ch, j) => {
+  const a = (j / 24) * Math.PI * 2;
+  return { ch, x: Math.sin(a), y: -Math.cos(a), lit: LIT_RUNES.includes(ch), panel: panelFor[ch], rune: runeByChar(ch) };
+});
+const lines = (Object.entries(CONSTELLATIONS) as [ConstellationId, typeof CONSTELLATIONS.medical][]).flatMap(([, c]) =>
+  c.lines.map((l) => l.map((i) => c.points[i].join(',')).join(' ')));
+const deco = (Object.values(CONSTELLATIONS)).flatMap((c) => c.points);
+---
+<div id="sky" data-mode="static" data-journey="false" data-locale={locale}>
+  <div class="canvas-host" aria-hidden="true"></div>
+  <svg class="chart" viewBox={`${-H} ${-H} ${2 * H} ${2 * H}`} aria-hidden="true" focusable="false">
+    <circle r="1.1" class="c1" />
+    <circle r="0.9" class="c2" />
+    <circle r="0.84" class="c3" />
+    {lines.map((pts) => <polyline points={pts} class="ln" />)}
+    {deco.map(([x, y]) => <circle cx={x} cy={y} r="0.008" class="dot" />)}
+  </svg>
+  <div class="ring">
+    {ring.map((r) => r.panel ? (
+      <a class="ring-rune lit" data-panel={r.panel.id} href={r.panel.href} style={`left:${pct(r.x)};top:${pct(r.y)}`} aria-label={`${r.rune?.name} — ${r.panel.id === 'skills' ? 'Skills' : r.panel.id === 'about' ? 'About' : 'Contact'}`}>{r.ch}</a>
+    ) : (
+      <span class:list={['ring-rune', { lit: r.lit }]} aria-hidden="true" style={`left:${pct(r.x)};top:${pct(r.y)}`}>{r.ch}</span>
+    ))}
+  </div>
+  {(Object.keys(LABEL_AT) as ConstellationId[]).map((id) => (
+    <span class="c-label" aria-hidden="true" style={`left:${pct(LABEL_AT[id][0])};top:${pct(LABEL_AT[id][1])}`}><span class="rune">{RUNES[id].char}</span> {CONSTELLATION_LABEL[id][locale]}</span>
+  ))}
+  <ul class="stars">
+    {projects.map((p) => {
+      const [x, y] = starPosition(p.constellation, p.order);
+      return (
+        <li style={`left:${pct(x)};top:${pct(y)}`}>
+          <a class="star" href={localePath(locale, `/work/${p.slug}`)} data-slug={p.slug} data-constellation={p.constellation} data-brightness={p.brightness} aria-label={p.title}>
+            <span class="dot" aria-hidden="true"></span>
+            <span class="name" aria-hidden="true">{p.title}</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</div>
+<style>
+  #sky { position: relative; width: min(660px, 100%); aspect-ratio: 1; container-type: inline-size; margin-inline: auto; }
+  .canvas-host { position: absolute; inset: 0; }
+  .chart { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .chart circle { fill: none; stroke: var(--gold); vector-effect: non-scaling-stroke; }
+  .c1 { stroke-opacity: .2; } .c2 { stroke-opacity: .14; } .c3 { stroke-opacity: .1; stroke-dasharray: 1 8; }
+  .ln { fill: none; stroke: var(--gold); stroke-opacity: .75; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .chart .dot { fill: #F6E3A8; stroke: none; opacity: .55; }
+  .ring-rune { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-rune); font-size: max(14px, 3.2cqw); color: var(--rune-off); line-height: 1; text-decoration: none; min-width: 28px; min-height: 28px; display: grid; place-items: center; }
+  .ring-rune.lit { color: var(--gold-3); text-shadow: 0 0 14px var(--halo); font-size: max(16px, 3.8cqw); }
+  a.ring-rune { min-width: 44px; min-height: 44px; border-radius: 50%; }
+  a.ring-rune:hover { text-shadow: 0 0 22px var(--gold-3); }
+  .c-label { position: absolute; transform: translate(-10%, -50%); font-size: max(9px, 1.7cqw); letter-spacing: .18em; text-transform: uppercase; color: #B9B19C; white-space: nowrap; }
+  .c-label .rune { color: var(--gold-3); font-size: 1.6em; letter-spacing: 0; }
+  .stars { list-style: none; margin: 0; padding: 0; }
+  .stars li { position: absolute; transform: translate(-50%, -50%); }
+  .star { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; text-decoration: none; position: relative; }
+  .star .dot { width: 8px; height: 8px; border-radius: 50%; background: #F6E3A8; box-shadow: 0 0 10px rgba(246, 227, 168, .8); transition: transform .2s; }
+  .star[data-brightness="3"] .dot { width: 12px; height: 12px; box-shadow: 0 0 18px rgba(246, 227, 168, .95); }
+  .star[data-brightness="1"] .dot { width: 6px; height: 6px; }
+  .star .name { position: absolute; top: calc(100% - 6px); left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--gold-3); background: rgba(10, 14, 28, .85); padding: 2px 8px; border-radius: 2px; display: none; pointer-events: none; z-index: 5; }
+  .star:hover .dot, .star:focus-visible .dot { transform: scale(1.6); }
+  .star:hover .name, .star:focus-visible .name, .star.is-hover .name { display: block; }
+</style>
