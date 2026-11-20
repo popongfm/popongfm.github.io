@@ -30,3 +30,5 @@ a:hover { color: var(--gold-3); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0s !important; scroll-behavior: auto !important; }
 }
+/* Thai script reads badly with tracked-out letters; keep normal spacing (runes keep theirs). */
+html[lang="th"] body *:not(.rune):not([lang="en"]) { letter-spacing: 0.01em !important; }

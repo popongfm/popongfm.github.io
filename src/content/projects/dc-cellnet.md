@@ -1,13 +1,15 @@
 ---
-title: { en: "DC-CellNet" }
-summary: { en: "Blood cell detection research, restructured from a BCCD proof of concept that benchmarked 12 YOLO checkpoints against a fine-tuned Faster R-CNN." }
+title: { en: "DC-CellNet", th: "DC-CellNet" }
+summary: { en: "Blood cell detection research, restructured from a BCCD proof of concept that benchmarked 12 YOLO checkpoints against a fine-tuned Faster R-CNN.", th: "งานวิจัยตรวจจับเซลล์เม็ดเลือด ที่ปรับโครงสร้างใหม่จาก proof of concept บนชุดข้อมูล BCCD ซึ่งเปรียบเทียบ YOLO 12 checkpoint กับ Faster R-CNN ที่ fine-tune แล้ว" }
 constellation: medical
 order: 1
 brightness: 3
 featured: 3
 status: in-progress
-role: { en: "Ran the proof-of-concept benchmark, built its reproducible evaluation pipeline, and am restructuring the research as DC-CellNet." }
+role: { en: "Ran the proof-of-concept benchmark, built its reproducible evaluation pipeline, and am restructuring the research as DC-CellNet.", th: "ทำ benchmark ในขั้น proof of concept และสร้าง pipeline ประเมินผลที่ทำซ้ำได้ ตอนนี้กำลังปรับโครงสร้างงานวิจัยเป็น DC-CellNet" }
 context: "Research project"
+contextTh: "โปรเจกต์วิจัย"
+yearTh: "2025 – 2026"
 year: "2025 – 2026"
 tools: ["PyTorch", "torchvision", "Ultralytics YOLO", "Faster R-CNN", "Python CLI"]
 links: { github: "https://github.com/popongfm/DC-CellNet" }

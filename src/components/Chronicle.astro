@@ -9,7 +9,7 @@ const { locale } = Astro.props;
   <h2 id="chron-h"><span class="rune" aria-hidden="true">ᛞ</span> {t(locale, 'chronicle.title')}</h2>
   <ol class="chron">
     {CHRONICLE.map((e) => (
-      <li><p class="when">{e.when} · {e.role}</p><h3>{e.title}</h3><p>{e.text}</p></li>
+      <li><p class="when">{e.when[locale]} · {e.role[locale]}</p><h3 lang="en">{e.title}</h3><p>{e.text[locale]}</p></li>
     ))}
   </ol>
 </section>

@@ -4,7 +4,8 @@ import Nav from '../components/Nav.astro';
 import type { Locale } from '../data/site';
 import { t, localePath, stripLocale } from '../i18n/ui';
 interface Props { title: string; locale: Locale; description?: string }
-const { title, locale, description = 'Popong Faimoon — AI Engineering & Data Science student. Medical computer vision, robotics and space.' } = Astro.props;
+const { title, locale, description } = Astro.props;
+const desc = description ?? t(locale, 'site.description');
 const path = stripLocale(Astro.url.pathname);
 const abs = (l: Locale) => new URL(localePath(l, path), Astro.site).href;
 ---
@@ -14,7 +15,7 @@ const abs = (l: Locale) => new URL(localePath(l, path), Astro.site).href;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
-  <meta name="description" content={description} />
+  <meta name="description" content={desc} />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0E1C'/%3E%3Cpath d='M16 4l2.5 9.5L28 16l-9.5 2.5L16 28l-2.5-9.5L4 16l9.5-2.5z' fill='%23E3C886'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +30,7 @@ const abs = (l: Locale) => new URL(localePath(l, path), Astro.site).href;
   <a class="skip-link" href="#main" data-journey-inert>{t(locale, 'skip')}</a>
   <Nav locale={locale} />
   <main id="main"><slot /></main>
-  <footer class="wrap footer" data-journey-inert><span class="rune" aria-hidden="true">ᚷ</span> Popong Faimoon · Pathum Thani, Thailand</footer>
+  <footer class="wrap footer" data-journey-inert><span class="rune" aria-hidden="true">ᚷ</span> {locale === 'th' ? 'โพธิ์พงศ์ ฝายมูล' : 'Popong Faimoon'} · {t(locale, 'footer.place')}</footer>
   <style>
     .footer { padding-block: 48px; color: var(--muted); font-size: 12px; letter-spacing: .1em; }
     .footer .rune { color: var(--gold-2); margin-right: 8px; }

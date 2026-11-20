@@ -1,13 +1,15 @@
 ---
-title: { en: "Medi-Ident AI" }
-summary: { en: "An Android app that identifies hypertension medications (33 classes) from a photo of the pill." }
+title: { en: "Medi-Ident AI", th: "Medi-Ident AI" }
+summary: { en: "An Android app that identifies hypertension medications (33 classes) from a photo of the pill.", th: "แอป Android ที่ระบุยาลดความดันโลหิต (33 ชนิด) จากภาพถ่ายเม็ดยา" }
 constellation: medical
 order: 0
 brightness: 3
 featured: 1
 status: in-progress
-role: { en: "Designed the PostgreSQL schema on Supabase and the API calls that fetch drug information after a pill is detected. A senior teammate designed the server and the app." }
+role: { en: "Designed the PostgreSQL schema on Supabase and the API calls that fetch drug information after a pill is detected. A senior teammate designed the server and the app.", th: "ออกแบบ schema PostgreSQL บน Supabase และ API ที่ดึงข้อมูลยาหลังตรวจจับเม็ดยาได้ ส่วนเซิร์ฟเวอร์และแอปออกแบบโดยรุ่นพี่ในทีม" }
 context: "Team project · exhibited at PRIS 2026"
+contextTh: "งานทีม · จัดแสดงที่ PRIS 2026"
+yearTh: "2025 – 2026"
 year: "2025 – 2026"
 tools: ["YOLO11s", "PostgreSQL", "Supabase", "FastAPI", "Ubuntu", "ngrok"]
 ---

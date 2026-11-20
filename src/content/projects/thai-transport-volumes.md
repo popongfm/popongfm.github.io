@@ -1,12 +1,14 @@
 ---
-title: { en: "Thai Transport Volumes" }
-summary: { en: "Road, water, rail and air passenger records, rebuilt from raw files with one command." }
+title: { en: "Thai Transport Volumes", th: "Thai Transport Volumes" }
+summary: { en: "Road, water, rail and air passenger records, rebuilt from raw files with one command.", th: "ข้อมูลผู้โดยสารทางถนน ทางน้ำ ทางราง และทางอากาศ สร้างใหม่ทั้งหมดจากไฟล์ดิบด้วยคำสั่งเดียว" }
 constellation: data
 order: 2
 brightness: 1
 status: done
-role: { en: "Built the workflow and pipeline for a group of 3." }
+role: { en: "Built the workflow and pipeline for a group of 3.", th: "สร้าง workflow และ pipeline ให้กลุ่ม 3 คน" }
 context: "AIE314/AIE315 final project"
+contextTh: "โปรเจกต์จบวิชา AIE314/AIE315"
+yearTh: "2026"
 year: "2026"
 tools: ["pandas", "pytest", "Matplotlib"]
 links: { github: "https://github.com/popongfm/AIE314-FinalProj_DataPrep-Mining" }

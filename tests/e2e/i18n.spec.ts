@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-test('th fallback', async ({ page }) => {
+// The English-fallback path is covered by the localize() unit tests; every project now has Thai text.
+test('th project page renders in thai', async ({ page }) => {
   await page.goto('/th/work/grb-cubesat');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Gamma-Ray Burst CubeSat');
-  await expect(page.getByText('ยังไม่มีฉบับภาษาไทย — แสดงเป็นภาษาอังกฤษ')).toBeVisible();
+  await expect(page.locator('article')).toContainText('หัวหน้าทีม');
   await expect(page.locator('html')).toHaveAttribute('lang', 'th');
 });
 

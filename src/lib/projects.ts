@@ -7,7 +7,7 @@ export interface ProjectData {
   title: Text; summary: Text; role: Text;
   constellation: ConstellationId; order: number; brightness: 1 | 2 | 3;
   featured?: 1 | 2 | 3; status: 'done' | 'in-progress';
-  context: string; year: string; tools: string[];
+  context: string; year: string; contextTh?: string; yearTh?: string; tools: string[];
   links: { github?: string; demo?: string; paper?: string };
   images: { src: string; alt: string }[]; draft: boolean;
 }
@@ -19,7 +19,8 @@ export function localize(entry: { id: string; data: ProjectData }, locale: Local
   const { title, summary, role, ...rest } = entry.data;
   const pick = (t: Text) => (locale === 'th' && t.th ? t.th : t.en);
   const isFallback = locale === 'th' && !(title.th && summary.th && role.th);
-  return { ...rest, slug: entry.id, title: pick(title), summary: pick(summary), role: pick(role), isFallback };
+  const th = locale === 'th';
+  return { ...rest, context: (th && rest.contextTh) || rest.context, year: (th && rest.yearTh) || rest.year, slug: entry.id, title: pick(title), summary: pick(summary), role: pick(role), isFallback };
 }
 
 export function sortProjects<T extends { constellation: ConstellationId; order: number }>(list: T[]): T[] {

@@ -1,5 +1,9 @@
 ---
 import { FUTHARK, LIT_RUNES } from '../data/runes';
+import type { Locale } from '../data/site';
+import { t } from '../i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
 const R = 78; // rune orbit radius in px (box 176)
 const runes = [...FUTHARK].map((ch, j) => {
   const deg = (j / 24) * 360;
@@ -10,7 +14,7 @@ const runes = [...FUTHARK].map((ch, j) => {
   <div class="orbit" aria-hidden="true">
     {runes.map((r) => <span class:list={{ lit: r.lit }} style={`transform: rotate(${r.deg}deg) translateY(-${R}px)`}>{r.ch}</span>)}
   </div>
-  <img src="/portrait/portrait-circle.webp" width="640" height="640" alt="Portrait of Popong Faimoon" decoding="async" fetchpriority="high" />
+  <img src="/portrait/portrait-circle.webp" width="640" height="640" alt={t(locale, 'portrait.alt')} decoding="async" fetchpriority="high" />
 </div>
 <style>
   .medallion { position: relative; width: 176px; height: 176px; flex-shrink: 0; display: grid; place-items: center; }
